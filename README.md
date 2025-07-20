@@ -14,7 +14,7 @@ This lab walks through the full lifecycle of a post-exploitation detection scena
 
 ---
 
-## 1. 🧰 Preparation (NIST IR Step 1)
+## 1. 🧰 Preparation 
 
 Attackers frequently use legitimate system tools like PowerShell to carry out malicious activity once they have access to a host. A common tactic is to download scripts or binaries using commands such as `Invoke-WebRequest`, which blends in with normal administrative behavior. This is part of a broader technique known as **Living Off the Land Binaries (LOLBins)**, where attackers exploit built-in tools to avoid detection.
 
