@@ -44,7 +44,7 @@ Defender for Endpoint detects the behavior and sends telemetry to Microsoft Sent
 
 #### 1️⃣ Query Defender Logs
 
-Run the following in advanced hunting to locate `Invoke-WebRequest` usage:
+Run the following in Log Analytics Workspace to locate `Invoke-WebRequest` usage:
 
 ```kql
 let TargetDevice = "nessa-windows";
@@ -53,6 +53,8 @@ DeviceProcessEvents
 | where FileName == "powershell.exe"
 | where ProcessCommandLine contains "Invoke-WebRequest"
 ```
+
+Verify payload detection. ✅
 
 ```kql
 let TargetHostname = "nessa-windows";
