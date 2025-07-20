@@ -78,7 +78,7 @@ DeviceProcessEvents
    * **KQL**:
 
 ```kql
-let TargetDevice = "windows-target-1";
+let TargetDevice = "nessa-windows";
 DeviceProcessEvents
 | where DeviceName == TargetDevice
 | where FileName == "powershell.exe"
@@ -93,7 +93,7 @@ DeviceProcessEvents
 5. **MITRE Tactic**: Credential Access / Execution
 6. **Enable** and save the rule
 
-![Sentinel Screenshot](https://github.com/user-attachments/assets/2cb640e9-9471-4439-a545-e3395bd2fd16)
+![Sentinel Screenshot](https://github.com/user-attachments/assets/76cacb6f-3ce3-4d2a-b76b-ee8bbc5164da)
 
 ---
 
