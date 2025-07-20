@@ -47,7 +47,7 @@ Defender for Endpoint detects the behavior and sends telemetry to Microsoft Sent
 Run the following in advanced hunting to locate `Invoke-WebRequest` usage:
 
 ```kql
-let TargetDevice = "windows-target-1";
+let TargetDevice = "nessa-windows";
 DeviceProcessEvents
 | where DeviceName == TargetDevice
 | where FileName == "powershell.exe"
@@ -55,7 +55,7 @@ DeviceProcessEvents
 ```
 
 ```kql
-let TargetHostname = "windows-target-1";
+let TargetHostname = "nessa-windows";
 let ScriptNames = dynamic(["eicar.ps1", "exfiltratedata.ps1", "portscan.ps1", "pwncrypt.ps1"]);
 DeviceProcessEvents
 | where DeviceName == TargetHostname
