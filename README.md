@@ -64,7 +64,7 @@ DeviceProcessEvents
 | summarize Count = count() by AccountName, DeviceName, FileName, ProcessCommandLine
 ```
 
-![Defender Screenshot](https://github.com/user-attachments/assets/9520d3df-b646-4ce6-a72e-52e1eaedc3f4)
+![Defender Screenshot](https://github.com/user-attachments/assets/49202b3e-736c-411e-8a46-67f60c431387)
 
 #### 2️⃣ Create Alert Rule in Sentinel
 
