@@ -175,9 +175,7 @@ DeviceProcessEvents
 * Assign incident and mark Active
 * Investigate:
 
-```plaintext
-powershell.exe -ExecutionPolicy Bypass -Command Invoke-WebRequest -Uri <URL> -OutFile <Path>
-```
+![Sentinel Screenshot](https://github.com/user-attachments/assets/7d589184-9fd1-479c-ba26-9a5adb092896)
 
 * Identify scripts:
 
